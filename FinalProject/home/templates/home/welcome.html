@@ -1,0 +1,13 @@
+{% block body %}
+{% if user.is_authenticated %}
+<h1>Home</h1>
+<ul>
+{% for flight in flights %}
+<li>Flight {{ flight.id }}: {{ flight.origin }} to {{  flight.destination }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>Please log in first</p>
+{% endif %}
+{% endblock %}
+
