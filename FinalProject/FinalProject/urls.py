@@ -25,5 +25,8 @@ urlpatterns = [
     path('home/', views.home, name="home"),
     path('register/', include('register.urls')),
     path('', include("django.contrib.auth.urls")),
-    path('wishlist/add/<int:vinyl_id>/', views.add_to_wishlist, name='add_to_wishlist')
+    path('wishlist/add/<int:vinyl_id>/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('category/<int:category_id>/', views.category, name='category'),
+    path('vinyl/<int:pk>/', views.vinyl_detail, name='vinyl_detail'),
+    path('cart/add/<int:vinyl_id>/', views.add_to_cart, name='add_to_cart')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

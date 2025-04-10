@@ -1,0 +1,32 @@
+{% extends 'home/base.html' %}
+
+{% block title %}{{ vinyl.title }} - Vinylio{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-5">
+    <img src="{{ vinyl.image.url }}" class="img-fluid rounded shadow" alt="{{ vinyl.title }}">
+    <br>
+    <br>
+  </div>
+  <div class="col-md-7">
+    <h2>{{ vinyl.title }}</h2>
+    <p><strong>Artist:</strong> {{ vinyl.artist }}</p>
+    <p><strong>Price:</strong> ${{ vinyl.price }}</p>
+    <p><strong>Genre:</strong> {{ vinyl.genre|capfirst }}</p>
+    <p><strong>Release Date:</strong> {{ vinyl.release_date }}</p>
+    <hr>
+    <p>{{ vinyl.description }}</p>
+
+    <form action="{% url 'add_to_cart' vinyl.id %}" method="POST" class="d-inline">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary me-2">Add to Cart</button>
+    </form>
+
+    <form action="{% url 'add_to_wishlist' vinyl.id %}" method="POST" class="d-inline">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-danger"> Wishlist</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

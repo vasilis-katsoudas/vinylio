@@ -1,13 +1,15 @@
-{% extends "register/layout.html" %}
+{% extends 'home/base.html' %}
 
 {% load crispy_forms_tags %}
 
-{% block title %}Create an Account{% endblock %}
+{% block title %}Register - Vinylio{% endblock %}
 
 {% block content %}
-<form method="POST" class="form-group">
-{% csrf_token %}
-{{ form | crispy }}
-<button type "submit">Register</button>
+<h2 class="text-center mb-4">Create an Account</h2>
+
+<form method="POST" class="form-group w-50 mx-auto">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <button type="submit" class="btn btn-success w-100 mt-2">Register</button>
 </form>
 {% endblock %}
