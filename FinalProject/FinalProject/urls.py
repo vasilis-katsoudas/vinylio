@@ -17,10 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from home import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', views.home, name="home"),
     path('register/', include('register.urls')),
-    path('', include("django.contrib.auth.urls"))
-]
+    path('', include("django.contrib.auth.urls")),
+    path('wishlist/add/<int:vinyl_id>/', views.add_to_wishlist, name='add_to_wishlist')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
