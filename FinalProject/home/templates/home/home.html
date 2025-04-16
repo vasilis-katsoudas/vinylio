@@ -6,8 +6,9 @@
 <h1 class="mb-4 text-center">Browse Vinyls</h1>
 
 <!--search bar-->
-<form method="get" class="mb-5">
-  <input type="text" name="q" class="form-control" placeholder="Search for albums or artists..." value="{{ request.GET.q }}">
+<form method="get" action="{% url 'search_results' %}" class="mb-5 position-relative" autocomplete="off">
+  <input type="text" name="q" id="searchInput" class="form-control" placeholder="Search for albums or artists..." value="{{ request.GET.q }}">
+  <div id="resultsBox" class="list-group position-absolute w-100 d-none" style="z-index: 9999;"></div>
 </form>
 
 <!--carousels-->
@@ -21,18 +22,18 @@
     <!--rows-->
     <div class="vinyl-scroll-container d-flex flex-nowrap overflow-auto gap-3 pb-2">
       {% for vinyl in vinyl_list %}
-      <a href="{% url 'vinyl_detail' vinyl.pk %}" class="text-decoration-none text-dark">
-        <div class="card vinyl-card text-center flex-shrink-0">
-          {% if vinyl.image %}
-          <img src="{{ vinyl.image.url }}" class="card-img-top" alt="{{ vinyl.title }}">
-          {% endif %}
-          <div class="card-body d-flex flex-column justify-content-between">
-            <h6 class="card-title text-truncate" title="{{ vinyl.title }}">{{ vinyl.title }}</h6>
-            <p class="card-text mb-1">{{ vinyl.artist }}</p>
-            <p class="card-text"><strong>${{ vinyl.price }}</strong></p>
+        <a href="{% url 'vinyl_detail' vinyl.pk %}" class="text-decoration-none text-dark">
+          <div class="card vinyl-card text-center flex-shrink-0">
+            {% if vinyl.image %}
+              <img src="{{ vinyl.image.url }}" class="card-img-top" alt="{{ vinyl.title }}">
+            {% endif %}
+            <div class="card-body d-flex flex-column justify-content-between">
+              <h6 class="card-title text-truncate" title="{{ vinyl.title }}">{{ vinyl.title }}</h6>
+              <p class="card-text mb-1">{{ vinyl.artist }}</p>
+              <p class="card-text"><strong>${{ vinyl.price }}</strong></p>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
       {% endfor %}
     </div>
   </div>
@@ -60,4 +61,5 @@
   </a>
   {% endfor %}
 </div>
+
 {% endblock %}

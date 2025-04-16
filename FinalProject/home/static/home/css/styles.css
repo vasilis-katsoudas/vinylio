@@ -1,0 +1,73 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    flex: 1;
+}
+
+.vinyl-card {
+    width: 200px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+}
+
+.vinyl-card:hover {
+    transform: scale(1.02);
+}
+
+.vinyl-card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.card-title.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+footer {
+    background-color: #f8f9fa;
+    padding: 1.5rem 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+#resultsBox {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    display: block;
+}
+
+#resultsBox a {
+    padding: 8px 12px;
+}
+
+#resultsBox img {
+    border-radius: 5px;
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    border-radius: 5px;
+}

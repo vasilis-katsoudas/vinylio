@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'home',
     'register',
     'cart',
-    'wishlist'
+    'wishlist',
     'crispy_forms',
     'crispy_bootstrap5',
     'django.contrib.admin',

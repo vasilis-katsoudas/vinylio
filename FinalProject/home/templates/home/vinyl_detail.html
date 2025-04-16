@@ -17,16 +17,15 @@
     <p><strong>Release Date:</strong> {{ vinyl.release_date }}</p>
     <hr>
     <p>{{ vinyl.description }}</p>
-
     <form action="{% url 'add_to_cart' vinyl.id %}" method="POST" class="d-inline">
       {% csrf_token %}
       <button type="submit" class="btn btn-primary me-2">Add to Cart</button>
     </form>
-
     <form action="{% url 'add_to_wishlist' vinyl.id %}" method="POST" class="d-inline">
       {% csrf_token %}
       <button type="submit" class="btn btn-outline-danger"> Wishlist</button>
     </form>
   </div>
 </div>
+
 {% endblock %}

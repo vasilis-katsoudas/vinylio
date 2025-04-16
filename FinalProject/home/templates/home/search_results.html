@@ -1,0 +1,29 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Search Results for "{{ query }}"</h2>
+
+{% if vinyls %}
+    <div class="d-flex flex-wrap justify-content-center gap-4">
+        {% for vinyl in vinyls %}
+            <a href="{% url 'vinyl_detail' vinyl.pk %}" class="text-decoration-none text-dark">
+                <div class="card vinyl-card text-center, flex-shrink-0">
+                    {% if vinyl.image %}
+                        <img src="{{ vinyl.image.url }}" class="card-img-top" alt="{{ vinyl.title }}">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h6 class="card-title text-truncate" title="{{ vinyl.title }}">{{ vinyl.title }}</h6>
+                        <p class="card-text mb-1">{{ vinyl.artist }}</p>
+                        <p class="card-text"><strong>${{ vinyl.price }}</strong></p>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No albums matched your search.</p>
+{% endif %}
+
+{% endblock %}

@@ -17,16 +17,24 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from home import views
+from cart import views as cart_views
+from wishlist import views as wishlist_views
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', views.home, name="home"),
+    path('', views.home, name="home"),
     path('register/', include('register.urls')),
     path('', include("django.contrib.auth.urls")),
-    path('wishlist/add/<int:vinyl_id>/', views.add_to_wishlist, name='add_to_wishlist'),
     path('category/<int:category_id>/', views.category, name='category'),
     path('vinyl/<int:pk>/', views.vinyl_detail, name='vinyl_detail'),
-    path('cart/add/<int:vinyl_id>/', views.add_to_cart, name='add_to_cart')
+    path('live-search/', views.live_search, name='live_search'),
+    path('search/', views.search_results, name='search_results'),
+    path('wishlist/', wishlist_views.wishlist, name='wishlist'),
+    path('cart/', cart_views.cart, name='cart'),
+    path('wishlist/add/<int:vinyl_id>/', wishlist_views.add_to_wishlist, name='add_to_wishlist'),
+    path('cart/add/<int:vinyl_id>/', cart_views.add_to_cart, name='add_to_cart'),
+    path('wishlist/remove/<int:item_id>/', wishlist_views.remove_from_wishlist, name='remove_from_wishlist'),
+    path('cart/remove/<int:item_id>/', cart_views.remove_from_cart, name='remove_from_cart')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

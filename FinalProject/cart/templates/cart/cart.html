@@ -1,0 +1,48 @@
+{% extends 'home/base.html' %}
+{% block title %}Your Cart{% endblock %}
+{% block content %}
+<h2 class="mb-4">Your Cart</h2>
+
+{% if cart_items %}
+    <div class="row">
+        {% for item in cart_items %}
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100 vinyl-card text-center">
+                    <a href="{% url 'vinyl_detail' item.vinyl.pk %}" class="text-decoration-none text-dark">
+                        {% if item.vinyl.image %}
+                            <img src="{{ item.vinyl.image.url }}" class="card-img-top" alt="{{ item.vinyl.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h6 class="card-title">{{ item.vinyl.title }}</h6>
+                            <p class="card-text">{{ item.vinyl.artist }}</p>
+                            <p class="card-text"><strong>${{ item.vinyl.price }}</strong></p>
+                            <p class="card-text">Quantity: {{ item.quantity }}</p>
+                            <p class="card-text">Subtotal: ${{ item.subtotal }}</p>
+                        </div>
+                    </a>
+                    <div class="card-footer bg-white border-0 px-3 pb-3 mt-auto">
+                        <div class="d-flex justify-content-between gap-2">
+                            <form method="post" action="{% url 'add_to_cart' item.vinyl.id %}" class="flex-fill m-0">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-success w-100 py-1">➕</button>
+                            </form>
+                            <form method="post" action="{% url 'remove_from_cart' item.id %}" class="flex-fill m-0">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-danger w-100 py-1">➖</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+    <h4>Total: ${{ total_price }}</h4>
+    <a href="#" class="btn btn-success">Proceed to Checkout</a>
+
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+
+{% endblock %}

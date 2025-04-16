@@ -6,19 +6,20 @@
 <h2 class="mb-4">{{ category.name }}</h2>
 
 <div class="row">
-  {% for vinyl in vinyls %}
-  <div class="col-md-3 col-sm-6 mb-4">
-    <div class="card h-100 vinyl-card">
-      {% if vinyl.image %}
-      <img src="{{ vinyl.image.url }}" class="card-img-top" alt="{{ vinyl.title }}">
-      {% endif %}
-      <div class="card-body">
-        <h6>{{ vinyl.title }}</h6>
-        <p>{{ vinyl.artist }}</p>
-        <p><strong>${{ vinyl.price }}</strong></p>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
+    {% for vinyl in vinyls %}
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 vinyl-card">
+                {% if vinyl.image %}
+                    <img src="{{ vinyl.image.url }}" class="card-img-top" alt="{{ vinyl.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h6>{{ vinyl.title }}</h6>
+                    <p>{{ vinyl.artist }}</p>
+                    <p><strong>${{ vinyl.price }}</strong></p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 </div>
+
 {% endblock %}

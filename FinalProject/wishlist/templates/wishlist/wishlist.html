@@ -1,0 +1,40 @@
+{% extends 'home/base.html' %}
+{% block title %}Your Wishlist{% endblock %}
+{% block content %}
+<h2 class="mb-4">Your Wishlist</h2>
+{% if wishlist_items %}
+    <div class="row">
+        {% for item in wishlist_items %}
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100 vinyl-card text-center d-flex flex-column justify-content-between">
+                    <a href="{% url 'vinyl_detail' item.vinyl.pk %}" class="text-decoration-none text-dark">
+                        {% if item.vinyl.image %}
+                            <img src="{{ item.vinyl.image.url }}" class="card-img-top" alt="{{ item.vinyl.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h6 class="card-title text-truncate">{{ item.vinyl.title }}</h6>
+                            <p class="card-text mb-1">{{ item.vinyl.artist }}</p>
+                            <p class="card-text"><strong>${{ item.vinyl.price }}</strong></p>
+                        </div>
+                    </a>
+                    <div class="card-footer bg-white border-0 px-3 pb-3 mt-auto">
+                        <div class="d-flex justify-content-between gap-2">
+                            <form action="{% url 'add_to_cart' item.vinyl.id %}" method="post" class="flex-fill m-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-success w-100 py-1">Add to Cart</button>
+                            </form>
+                            <form action="{% url 'remove_from_wishlist' item.id %}" method="post" class="flex-fill m-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger w-100 py-1">Remove from Wishlist</button>
+                            </form>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Your wishlist is empty.</p>
+{% endif %}
+
+{% endblock %}
