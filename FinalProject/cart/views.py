@@ -5,8 +5,10 @@ from home.models import Vinyl
 from django.db.models import Q
 from django.contrib import messages
 
-@login_required
 def add_to_cart(request, vinyl_id):
+    if not request.user.is_authenticated:
+        messages.warning(request, "You must login to perform this action.")
+        return redirect('login')
     vinyl = get_object_or_404(Vinyl, id=vinyl_id)
     cart_item, created = CartItem.objects.get_or_create(user=request.user, vinyl=vinyl)
     if not created:
@@ -28,8 +30,10 @@ def remove_from_cart(request, item_id):
     messages.info(request, f"{item.vinyl.title} removed from cart.")
     return redirect('cart')
 
-@login_required
 def cart(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "You must login to perform this action.")
+        return redirect('login')
     items = CartItem.objects.filter(user=request.user)
     total_price = sum(item.vinyl.price * item.quantity for item in items)
     for item in items:

@@ -21,6 +21,7 @@ from cart import views as cart_views
 from wishlist import views as wishlist_views
 from django.conf.urls.static import static
 from django.conf import settings
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,5 +37,7 @@ urlpatterns = [
     path('wishlist/add/<int:vinyl_id>/', wishlist_views.add_to_wishlist, name='add_to_wishlist'),
     path('cart/add/<int:vinyl_id>/', cart_views.add_to_cart, name='add_to_cart'),
     path('wishlist/remove/<int:item_id>/', wishlist_views.remove_from_wishlist, name='remove_from_wishlist'),
-    path('cart/remove/<int:item_id>/', cart_views.remove_from_cart, name='remove_from_cart')
+    path('cart/remove/<int:item_id>/', cart_views.remove_from_cart, name='remove_from_cart'),
+    path('profile/', views.profile, name='profile'),
+    path('logout/', LogoutView.as_view(next_page='home'), name='logout')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

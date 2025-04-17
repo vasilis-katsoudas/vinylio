@@ -7,11 +7,9 @@ from wishlist.models import Wishlist
 from cart.models import CartItem
 from django.db.models import Q
 from django.contrib import messages
-
-def add_to_wishlist(request, vinyl_id):
-    vinyl = get_object_or_404(Vinyl, id=vinyl_id)
-    Wishlist.objects.get_or_create(user=request.user, vinyl=vinyl)
-    return redirect('home')
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
+from django.contrib.auth import logout
+from django.contrib.auth.models import User
 
 def category(request, category_id):
     category = Category.objects.get(id=category_id)
@@ -68,3 +66,40 @@ def search_results(request):
         'query': query,
         'vinyls': vinyls
     })
+
+@login_required
+def profile(request):
+    user_form = CustomUserChangeForm(request.POST or None, instance=request.user)
+    password_form = PasswordChangeForm(request.user, request.POST or None)
+
+    if request.method == 'POST':
+        if 'save_profile' in request.POST:
+            if user_form.is_valid():
+                cleaned = user_form.cleaned_data
+                if not cleaned['first_name'] or not cleaned['last_name'] or not cleaned['email']:
+                    messages.error(request, "All fields are required.")
+                else:
+                    user_form.save()
+                    messages.success(request, "Profile updated successfully.")
+                    return redirect('profile')
+
+        elif 'change_password' in request.POST and password_form.is_valid():
+            user = password_form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Password changed successfully.")
+            return redirect('profile')
+
+    return render(request, 'home/profile.html', {
+        'form': user_form,
+        'password_form': password_form
+    })
+
+class CustomUserChangeForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'password' in self.fields:
+            del self.fields['password']

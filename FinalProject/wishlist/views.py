@@ -6,8 +6,10 @@ from django.db.models import Q
 from django.contrib import messages
 from cart.models import CartItem
 
-@login_required
 def add_to_wishlist(request, vinyl_id):
+    if not request.user.is_authenticated:
+        messages.warning(request, "You must login to perform this action.")
+        return redirect('login')
     vinyl = get_object_or_404(Vinyl, id=vinyl_id)
     Wishlist.objects.get_or_create(user=request.user, vinyl=vinyl)
     messages.success(request, f"{vinyl.title} added to wishlist successfully.")
@@ -20,7 +22,9 @@ def remove_from_wishlist(request, item_id):
     messages.info(request, f"{item.vinyl.title} removed from wishlist.")
     return redirect('wishlist')
 
-@login_required
 def wishlist(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "You must login to perform this action.")
+        return redirect('login')
     items = Wishlist.objects.filter(user=request.user)
     return render(request, 'wishlist/wishlist.html', {'wishlist_items': items})
