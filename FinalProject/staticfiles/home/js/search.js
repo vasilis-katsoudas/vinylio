@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
             resultItem.href = `/vinyl/${album.id}/`;
 
             resultItem.innerHTML = `
-              <img src="${album.image}" alt="${album.title}" class="me-3 rounded" style="width: 50px; height: 50px; object-fit: cover;">
+              <img src="/static${album.image}" alt="${album.title}" class="me-3 rounded" style="width: 50px; height: 50px; object-fit: cover;">
               <div>
                 <div><strong>${album.title}</strong></div>
                 <small class="text-muted">${album.artist}</small>
