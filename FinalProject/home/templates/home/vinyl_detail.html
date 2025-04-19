@@ -56,9 +56,10 @@
   </div>
 
   <hr>
+
   <!--recommendations section-->
   <h4>You might also like</h4>
-  <div class="d-flex flex-wrap gap-4">
+  <div class="vinyl-scroll-container d-flex flex-nowrap overflow-auto gap-3 pb-2">
     {% for v in recommended_vinyls %}
       <a href="{% url 'vinyl_detail' v.pk %}" class="text-decoration-none text-dark">
         <div class="card vinyl-card text-center flex-shrink-0">
