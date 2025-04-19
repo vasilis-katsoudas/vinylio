@@ -44,5 +44,7 @@ urlpatterns = [
     path('rate/<int:vinyl_id>/', views.rate_vinyl, name='rate'),
     path('favorite/<int:vinyl_id>/', views.toggle_favorite, name='favorite'),
     path('favorites/', views.favorites, name='favorites'),
-] += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
