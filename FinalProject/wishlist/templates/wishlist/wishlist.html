@@ -10,7 +10,7 @@
             <div class="card h-100 vinyl-card text-center" style="width: 200px;">
                 <a href="{% url 'vinyl_detail' item.vinyl.pk %}" class="text-decoration-none text-dark">
                     {% if item.vinyl.image %}
-                        <img src="{{ item.vinyl.image.url }}" class="card-img-top" alt="{{ item.vinyl.title }}">
+                        <img src="/static{{ item.vinyl.image.url }}" class="card-img-top" alt="{{ item.vinyl.title }}">
                     {% endif %}
                     <div class="card-body">
                         <h6 class="card-title text-truncate">{{ item.vinyl.title }}</h6>

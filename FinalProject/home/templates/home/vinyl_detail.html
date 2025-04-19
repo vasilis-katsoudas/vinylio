@@ -63,7 +63,7 @@
       <a href="{% url 'vinyl_detail' v.pk %}" class="text-decoration-none text-dark">
         <div class="card vinyl-card text-center flex-shrink-0">
           {% if v.image %}
-            <img src="{{ v.image.url }}" class="card-img-top" alt="{{ v.title }}">
+            <img src="/static{{ v.image.url }}" class="card-img-top" alt="{{ v.title }}">
           {% endif %}
           <div class="card-body d-flex flex-column justify-content-between">
             <h6 class="card-title text-truncate" title="{{ v.title }}">{{ v.title }}</h6>
