@@ -43,5 +43,6 @@ urlpatterns = [
     path('genre/<str:genre>/', views.genre_vinyls, name='genre'),
     path('rate/<int:vinyl_id>/', views.rate_vinyl, name='rate'),
     path('favorite/<int:vinyl_id>/', views.toggle_favorite, name='favorite'),
-    path('favorites/', views.favorites, name='favorites')
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('favorites/', views.favorites, name='favorites'),
+] += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
