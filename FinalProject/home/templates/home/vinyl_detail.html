@@ -6,9 +6,9 @@
 <div class="row">
   <div class="col-md-5">
     <img src="{{ vinyl.image.url }}" class="img-fluid rounded shadow" alt="{{ vinyl.title }}">
-    <br>
-    <br>
+    <br><br>
   </div>
+  <!--vinyl information-->
   <div class="col-md-7">
     <h2>{{ vinyl.title }}</h2>
     <p><strong>Artist:</strong> {{ vinyl.artist }}</p>
@@ -17,15 +17,62 @@
     <p><strong>Release Date:</strong> {{ vinyl.release_date }}</p>
     <hr>
     <p>{{ vinyl.description }}</p>
-    <form action="{% url 'add_to_cart' vinyl.id %}" method="POST" class="d-inline">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-primary me-2">Add to Cart</button>
-    </form>
-    <form action="{% url 'add_to_wishlist' vinyl.id %}" method="POST" class="d-inline">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-outline-danger"> Wishlist</button>
-    </form>
+    <div class="d-flex align-items-start gap-3">
+      <!--add to cart button-->
+      <form action="{% url 'add_to_cart' vinyl.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+      </form>
+      <!--add to wishlist button-->
+      <form action="{% url 'add_to_wishlist' vinyl.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger">Wishlist</button>
+      </form>
+      <!--like button if user is logged in-->
+      {% if user.is_authenticated %}
+        <form method="POST" class="ms-auto">
+          <button id="fav-btn" type="button" class="btn btn-light border" data-vinyl-id="{{ vinyl.id }}" data-csrf="{{ csrf_token }}">
+            <i class="fa {% if is_favorited %}fa-heart text-danger{% else %}fa-heart-o{% endif %}"></i>
+            <span id="fav-count">{{ total_favorites }}</span>
+          </button>
+        </form>
+      {% endif %}
+    </div>
+
+    <!--rating section-->
+    <div id="rating-stars" class="mt-3"
+      data-vinyl-id="{{ vinyl.id }}"
+      data-csrf="{{ csrf_token }}"
+      data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}">
+      {% if user.is_authenticated %}
+        {% for i in "12345" %}
+          <i class="fa {% if user_rating >= forloop.counter %}fa-star{% else %}fa-star-o{% endif %} rate-star fs-4 me-1" data-value="{{ forloop.counter }}"></i>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <p class="text-muted small">
+      Average Rating: <strong>{{ average_rating|floatformat:1 }}</strong> ★ ({{ total_ratings }} {{ total_ratings|pluralize:"rating,ratings" }})
+    </p>
+  </div>
+
+  <hr>
+  <!--recommendations section-->
+  <h4>You might also like</h4>
+  <div class="d-flex flex-wrap gap-4">
+    {% for v in recommended_vinyls %}
+      <a href="{% url 'vinyl_detail' v.pk %}" class="text-decoration-none text-dark">
+        <div class="card vinyl-card text-center flex-shrink-0">
+          {% if v.image %}
+            <img src="{{ v.image.url }}" class="card-img-top" alt="{{ v.title }}">
+          {% endif %}
+          <div class="card-body d-flex flex-column justify-content-between">
+            <h6 class="card-title text-truncate" title="{{ v.title }}">{{ v.title }}</h6>
+            <p class="card-text mb-1">{{ v.artist }}</p>
+            <p class="card-text"><strong>${{ v.price }}</strong></p>
+          </div>
+        </div>
+      </a>
+    {% endfor %}
   </div>
 </div>
-
 {% endblock %}

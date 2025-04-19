@@ -11,12 +11,12 @@ class Vinyl(models.Model):
     GENRE_CHOICES = [
         ('rock', 'Rock'),
         ('pop', 'Pop'),
+        ('alternative', 'Alternative'),
         ('jazz', 'Jazz'),
-        ('classical', 'Classical'),
         ('hiphop', 'Hip-Hop'),
         ('metal', 'Metal'),
-        ('blues', 'Blues'),
-        ('electronic', 'Electronic'),
+        ('rnb', 'R&B'),
+        ('electronic', 'Electronic')
     ]
 
     title = models.CharField(max_length=200)
@@ -32,3 +32,27 @@ class Vinyl(models.Model):
 
     def __str__(self):
         return f"{self.title} by {self.artist}"
+
+class Rating(models.Model):
+    vinyl = models.ForeignKey(Vinyl, on_delete=models.CASCADE, related_name="ratings")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    stars = models.IntegerField(default=1)
+
+    class Meta:
+        unique_together = ('vinyl', 'user')
+
+class Favorite(models.Model):
+    vinyl = models.ForeignKey(Vinyl, on_delete=models.CASCADE, related_name="favorites")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('vinyl', 'user')
+
+class ViewHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    vinyl = models.ForeignKey(Vinyl, on_delete=models.CASCADE)
+    viewed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-viewed_at']
+        unique_together = ('user', 'vinyl')

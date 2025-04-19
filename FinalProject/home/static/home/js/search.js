@@ -5,12 +5,14 @@ document.addEventListener('DOMContentLoaded', function () {
   input.addEventListener('input', function () {
     const query = input.value;
 
+    /** trigger live search */
     if (query.length > 1) {
       fetch(`/live-search/?q=${query}`)
         .then(response => response.json())
         .then(data => {
           suggestionBox.innerHTML = '';
 
+          /** loop through album data and render */
           data.results.forEach(album => {
             const resultItem = document.createElement('a');
             resultItem.classList.add(
@@ -32,14 +34,16 @@ document.addEventListener('DOMContentLoaded', function () {
             suggestionBox.appendChild(resultItem);
           });
 
+          /** show suggestion box */
           suggestionBox.classList.remove('d-none');
         });
     } else {
+      /** hide suggestion box */
       suggestionBox.classList.add('d-none');
     }
   });
 
-  //hide suggestion box
+  /** hide suggestion box */
   document.addEventListener('click', function (e) {
     if (!e.target.closest('#searchInput') && !e.target.closest('#resultsBox')) {
       suggestionBox.classList.add('d-none');

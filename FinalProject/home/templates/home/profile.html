@@ -3,9 +3,9 @@
 
 {% block title %}Your Profile{% endblock %}
 {% block content %}
+<!--user profile info-->
 <div class="container">
     <h2 class="mb-4">Your Profile</h2>
-
     <form method="post" class="card p-4 shadow-sm" id="profileForm">
         {% csrf_token %}
         <div class="mb-3">
@@ -25,7 +25,7 @@
             <button type="submit" name="save_profile" class="btn btn-primary d-none" id="saveBtn">Save Changes</button>
         </div>
     </form>
-
+<!--password section when the user presses to change-->
     <div id="passwordSection" class="mt-4 d-none">
         <form method="post">
             {% csrf_token %}
@@ -33,7 +33,7 @@
             <button type="submit" name="change_password" class="btn btn-warning mt-2">Update Password</button>
         </form>
     </div>
-
+<!--logout button-->
     <form method="post" action="{% url 'logout' %}" class="mt-4">
         {% csrf_token %}
         <button type="submit" class="btn btn-outline-danger w-100">Logout</button>

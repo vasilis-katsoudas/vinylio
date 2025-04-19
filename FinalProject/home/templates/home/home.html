@@ -6,10 +6,43 @@
 <h1 class="mb-4 text-center">Browse Vinyls</h1>
 
 <!--search bar-->
-<form method="get" action="{% url 'search_results' %}" class="mb-5 position-relative" autocomplete="off">
-  <input type="text" name="q" id="searchInput" class="form-control" placeholder="Search for albums or artists..." value="{{ request.GET.q }}">
-  <div id="resultsBox" class="list-group position-absolute w-100 d-none" style="z-index: 9999;"></div>
+<form method="get" action="{% url 'search_results' %}" class="mb-5 d-flex position-relative" autocomplete="off">
+  <div class="position-relative w-100 me-2">
+    <input type="text" name="q" id="searchInput" class="form-control me-2" placeholder="Search for albums or artists..." value="{{ request.GET.q }}">
+    <div id="resultsBox" class="list-group position-absolute w-100 d-none" style="top: 100%; z-index: 9999;"></div>
+  </div>
+  <button type="submit" class="btn btn-dark">Search</button>
 </form>
+
+<!--genres section-->
+<div class="mb-4 d-flex flex-wrap gap-2 justify-content-center">
+  {% for code, name in genres %}
+    <a href="{% url 'genre' code %}" class="btn btn-outline-dark me-2 mb-2">{{ name }}</a>
+  {% endfor %}
+</div>
+
+<!--show recently viewed items when logged in-->
+{% if history %}
+  <hr>
+  <h4>Recently Viewed</h4>
+  <div class="vinyl-scroll-container d-flex flex-nowrap overflow-auto gap-3 pb-2">
+    {% for item in history %}
+      <a href="{% url 'vinyl_detail' item.vinyl.pk %}" class="text-decoration-none text-dark">
+        <div class="card vinyl-card text-center flex-shrink-0">
+          {% if item.vinyl.image %}
+            <img src="{{ item.vinyl.image.url }}" class="card-img-top" alt="{{ item.vinyl.title }}">
+          {% endif %}
+          <div class="card-body d-flex flex-column justify-content-between">
+            <h6 class="card-title text-truncate" title="{{ item.vinyl.title }}">{{ item.vinyl.title }}</h6>
+            <p class="card-text mb-1">{{ item.vinyl.artist }}</p>
+            <p class="card-text"><strong>${{ item.vinyl.price }}</strong></p>
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+  <hr>
+{% endif %}
 
 <!--carousels-->
 {% for category, vinyl_list in category_vinyls.items %}
@@ -39,18 +72,30 @@
   </div>
 {% endfor %}
 
-<!--all vinyls-->
 <hr>
-<h4 class="mt-5">All Vinyls</h4>
+<!--sorting feature-->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="d-flex align-items-center">
+    <h4 class="mb-0">All Vinyls</h4>
+  </div>
+  <form method="get" action="/#all_vinyls" class="d-flex align-items-center gap-2">
+    <label for="sortSelect" class="mb-0">Sort by:</label>
+    <select id="sortSelect" name="sort" onchange="this.form.submit()" class="form-select form-select-sm w-auto">
+      <option value="">Default</option>
+      <option value="title" {% if request.GET.sort == 'title' %}selected{% endif %}>Alphabetical</option>
+      <option value="year" {% if request.GET.sort == 'year' %}selected{% endif %}>Most Recent</option>
+      <option value="likes" {% if request.GET.sort == 'likes' %}selected{% endif %}>Most Liked</option>
+    </select>
+  </form>
+</div>
 
-<br>
-
-<div class="d-flex flex-wrap justify-content-center gap-4">
+<!--all vinyls section-->
+<div class="d-flex flex-wrap justify-content-center gap-4" id="vinylGrid">
   {% for vinyl in vinyls %}
-  <a href="{% url 'vinyl_detail' vinyl.pk %}" class="text-decoration-none text-dark">
-    <div class="card vinyl-card text-center, flex-shrink-0">
+  <a href="{% url 'vinyl_detail' vinyl.pk %}" class="text-decoration-none text-dark vinyl-card-wrapper {% if forloop.counter > 8 %}d-none extra-vinyl{% endif %}">
+    <div class="card vinyl-card text-center">
       {% if vinyl.image %}
-      <img src="{{ vinyl.image.url }}" class="card-img-top" alt="{{ vinyl.title }}">
+        <img src="{{ vinyl.image.url }}" class="card-img-top" alt="{{ vinyl.title }}">
       {% endif %}
       <div class="card-body d-flex flex-column justify-content-between">
         <h6 class="card-title text-truncate" title="{{ vinyl.title }}">{{ vinyl.title }}</h6>
@@ -61,5 +106,13 @@
   </a>
   {% endfor %}
 </div>
+
+<!--button functionality depending on vinyls count-->
+{% if vinyls|length > 8 %}
+<div class="text-center mt-4">
+  <button class="btn btn-outline-secondary" id="showAllBtn">Show All</button>
+  <button class="btn btn-outline-secondary d-none mt-2" id="showLessBtn">Show Less</button>
+</div>
+{% endif %}
 
 {% endblock %}

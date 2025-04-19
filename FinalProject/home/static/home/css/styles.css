@@ -71,3 +71,21 @@ footer {
     font-size: 0.85rem;
     border-radius: 5px;
 }
+
+.rate-star {
+    cursor: pointer;
+    color: #ffd700;
+    transition: transform 0.2s ease;
+  }
+  
+  .rate-star:hover {
+    transform: scale(1.2);
+  }
+  
+  .favorite-btn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

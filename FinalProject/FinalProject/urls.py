@@ -39,5 +39,9 @@ urlpatterns = [
     path('wishlist/remove/<int:item_id>/', wishlist_views.remove_from_wishlist, name='remove_from_wishlist'),
     path('cart/remove/<int:item_id>/', cart_views.remove_from_cart, name='remove_from_cart'),
     path('profile/', views.profile, name='profile'),
-    path('logout/', LogoutView.as_view(next_page='home'), name='logout')
+    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+    path('genre/<str:genre>/', views.genre_vinyls, name='genre'),
+    path('rate/<int:vinyl_id>/', views.rate_vinyl, name='rate'),
+    path('favorite/<int:vinyl_id>/', views.toggle_favorite, name='favorite'),
+    path('favorites/', views.favorites, name='favorites')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

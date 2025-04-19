@@ -5,6 +5,7 @@
 {% block content %}
 <h2 class="mb-4">Search Results for "{{ query }}"</h2>
 
+<!--display vinyls matching search query-->
 {% if vinyls %}
     <div class="d-flex flex-wrap justify-content-center gap-4">
         {% for vinyl in vinyls %}

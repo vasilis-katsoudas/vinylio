@@ -5,6 +5,7 @@ from home.models import Vinyl
 from django.db.models import Q
 from django.contrib import messages
 
+#add item to cart
 def add_to_cart(request, vinyl_id):
     if not request.user.is_authenticated:
         messages.warning(request, "You must login to perform this action.")
@@ -17,6 +18,7 @@ def add_to_cart(request, vinyl_id):
     messages.success(request, f"{vinyl.title} added to cart successfully.")
     return redirect(request.META.get('HTTP_REFERER', 'home'))
 
+#remove item from cart
 @login_required
 def remove_from_cart(request, item_id):
     item = get_object_or_404(CartItem, id=item_id, user=request.user)
@@ -30,6 +32,7 @@ def remove_from_cart(request, item_id):
     messages.info(request, f"{item.vinyl.title} removed from cart.")
     return redirect('cart')
 
+#display cart page
 def cart(request):
     if not request.user.is_authenticated:
         messages.warning(request, "You must login to perform this action.")
